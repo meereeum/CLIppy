@@ -1,3 +1,6 @@
+import math
+
+
 def pprint_header_with_lines(str_header, l_lines, UNDERLINE_CHAR='_'):
     """Pretty-print `str_header` + list of `l_lines`
 

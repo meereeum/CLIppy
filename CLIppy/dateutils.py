@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import sys
 
 from dateutil import parser as dparser
 
@@ -30,7 +31,7 @@ def convert_date(date_in, fmt_out='%Y-%m-%d'):
     except(AttributeError, TypeError): # already datetime
         date_out = date_out
     except(ValueError):
-        print("I don't recognize that date.. try again ?")
+        print("\nI don't recognize that date.. try again ?\n")
         sys.exit(0)
 
     return date_out.strftime(fmt_out)
