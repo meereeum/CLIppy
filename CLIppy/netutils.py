@@ -15,7 +15,7 @@ def safe_encode(*args, pattern=' ', space_char='+'):
                   re.DOTALL)
 
 
-def soup_me(*args, verbose=False, **kwargs):
+def soup_me(*args, verbose=False, encoding='base6', **kwargs):
     DEFAULT = {'headers': {'User-agent': 'shiffy47'}}
     kwargs = {**DEFAULT, **kwargs}
 
@@ -27,7 +27,10 @@ def soup_me(*args, verbose=False, **kwargs):
         print(kwargs)
 
     requested = requests.get(*args, **kwargs)
-    requested.encoding = 'base64' # fix Petite Sour Rosé
+
+    if encoding:
+        requested.encoding = encoding # fix Petite Sour Rosé
+
     soup = BeautifulSoup(requested.text, 'lxml')
     # soup = BeautifulSoup(requests.get(*args, **kwargs).content, 'lxml')
 
