@@ -1,7 +1,20 @@
+from functools import wraps
 import re
 import requests
+import sys
 
 from bs4 import BeautifulSoup
+
+
+def connect_gracefully(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        try:
+            f(*args, **kwargs)
+        except(requests.ConnectionError):
+            print('\nno connection...\n')
+            sys.exit(0)
+    return wrapper
 
 
 def safe_encode(*args, pattern=' ', space_char='+'):

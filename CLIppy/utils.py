@@ -8,14 +8,14 @@ import sys
 def dedupe(lst):
     """list -> deduped iterable of items, in order"""
     from collections import OrderedDict
-    return OrderedDict((item, None) for item in lst).keys()
+    return list(OrderedDict((item, None) for item in lst).keys())
 
 
 def fail_gracefully(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         try:
-            f(*args, **kwargs)
+            return f(*args, **kwargs)
         except(KeyboardInterrupt):
             sys.exit(0)
     return wrapper
