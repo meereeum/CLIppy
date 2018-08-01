@@ -4,6 +4,7 @@ import requests
 import sys
 
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 
 def connect_gracefully(f):
@@ -28,24 +29,39 @@ def safe_encode(*args, pattern=' ', space_char='+'):
                   re.DOTALL)
 
 
-def soup_me(*args, verbose=False, encoding='base6', **kwargs):
+# @connect_gracefully
+def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
+            **kwargs):
     DEFAULT = {'headers': {'User-agent': 'shiffy47'}}
     kwargs = {**DEFAULT, **kwargs}
-
-    # return BeautifulSoup(requests.get(*args, **kwargs).content, 'lxml')
 
     if verbose:
         print('pinging...')
         print(args)
         print(kwargs)
 
-    requested = requests.get(*args, **kwargs)
+    def request_html(*args, encoding=encoding, **kwargs):
+        requested = requests.get(*args, **kwargs)
+        if encoding:
+            requested.encoding = encoding # fix Petite Sour Rosé
+        return requested.text
 
-    if encoding:
-        requested.encoding = encoding # fix Petite Sour Rosé
+    def request_js(*args, encoding=encoding, **kwargs): # TODO - encoding ?
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            browser = webdriver.PhantomJS() # TODO headless ffox
+        browser.get(*args)
+        return browser.page_source
 
-    soup = BeautifulSoup(requested.text, 'lxml')
-    # soup = BeautifulSoup(requests.get(*args, **kwargs).content, 'lxml')
+    requester = request_js if from_headless else request_html
+    try:
+        requesttxt = requester(*args, encoding=encoding, **kwargs)
+    except(requests.exceptions.ConnectionError): # TODO selenium exception ?
+        print('\nno connection...\n')
+        sys.exit(0)
+
+    soup = BeautifulSoup(requesttxt, 'lxml')
 
     if verbose:
         print('...&done')
