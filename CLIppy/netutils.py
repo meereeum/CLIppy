@@ -13,7 +13,8 @@ def connect_gracefully(f):
         try:
             f(*args, **kwargs)
         except(requests.ConnectionError):
-            print('\nno connection...\n')
+            #print('\nno connection...\n')
+            print('no connection...\n')
             sys.exit(0)
     return wrapper
 
@@ -32,6 +33,7 @@ def safe_encode(*args, pattern=' ', space_char='+'):
 # @connect_gracefully
 def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
             **kwargs):
+    # N.B. args expects base_url (str) + optional params (dict)
     DEFAULT = {'headers': {'User-agent': 'shiffy47'}}
     kwargs = {**DEFAULT, **kwargs}
 

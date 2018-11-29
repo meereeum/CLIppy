@@ -44,7 +44,7 @@ def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f
 
     if not f:
         dirname = (os.path.dirname(os.path.realpath(__file__)) if dirname is None
-                else dirname)
+                   else dirname)
         fname = fname if fname is not None else sep.join((prefix, str(suffix)))
         f = os.path.join(dirname, fname)
 
