@@ -1,7 +1,9 @@
 from functools import wraps
+import itertools
 import re
 import requests
 import sys
+from urllib.parse import quote_plus
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -24,10 +26,24 @@ def safe_encode(*args, pattern=' ', space_char='+'):
     """
     # SPACE_CHAR = '+'
     # return SPACE_CHAR.join(args).replace(' ', SPACE_CHAR)
+    # args = (quote_plus(str(arg) for arg in args))
+    args = itertools.chain.from_iterable(
+        (quote_plus(argwd) for argwd in arg.split(pattern)) for arg in args)
     return re.sub(re.compile(pattern),
                   space_char,
                   space_char.join(args),
                   re.DOTALL)
+
+
+def compose_query(base_url, d_params=None):
+    """Compose query URL, as per requests lib"""
+    d_params = d_params if d_params is not None else {}
+
+    paramstr = '?' if d_params is not None else ''
+    paramstr += '&'.join(('{}={}'.format(k, safe_encode(v))
+                         for k,v in d_params.items()))
+
+    return base_url + paramstr
 
 
 # @connect_gracefully
@@ -53,7 +69,12 @@ def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
             browser = webdriver.PhantomJS() # TODO headless ffox
-        browser.get(*args)
+        #options = webdriver.firefox.options.Options()
+        #options.set_headless(headless=True)
+        #geckodriver = '/usr/local/bin/geckodriver'
+        #browser = webdriver.Firefox(executable_path=geckodriver,
+        #                            firefox_options=options)
+        browser.get(compose_query(*args))
         return browser.page_source
 
     requester = request_js if from_headless else request_html
