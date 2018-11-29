@@ -53,3 +53,12 @@ def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f
                   if not l.startswith(COMMENT_CHAR)]
 
     return strlst
+
+
+class AttrDict(dict):
+    """dicts w/ less typing
+
+    via https://danijar.com/patterns-for-fast-prototyping-with-tensorflow/
+    """
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__
