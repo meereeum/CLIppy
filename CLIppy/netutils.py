@@ -1,5 +1,6 @@
 from functools import wraps
 import itertools
+import json
 import re
 import requests
 import sys
@@ -44,6 +45,10 @@ def compose_query(base_url, d_params=None):
                          for k,v in d_params.items()))
 
     return base_url + paramstr
+
+
+def json_me(*args, **kwargs):
+    return json.loads(requests.get(*args, **kwargs).text)
 
 
 # @connect_gracefully
