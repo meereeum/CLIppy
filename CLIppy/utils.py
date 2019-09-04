@@ -1,6 +1,7 @@
 from functools import wraps
 import itertools
 import os
+import re
 import sys
 
 
@@ -41,6 +42,7 @@ def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f
     assert (bool(suffix and prefix) + bool(fname) + bool(f)) == 1, 'Unclear: must specify among suffix+prefix vs. fname vs. path/to/f !'
 
     COMMENT_CHAR = '#'
+    PATTERN = re.compile('{}.*$'.format(COMMENT_CHAR))
 
     if not f:
         dirname = (os.path.dirname(os.path.realpath(__file__)) if dirname is None
@@ -49,7 +51,7 @@ def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f
         f = os.path.join(dirname, fname)
 
     with open(f, 'r') as openfile:
-        strlst = [l.strip().lower() for l in openfile
+        strlst = [re.sub(PATTERN, '', l.strip().lower()) for l in openfile
                   if not l.startswith(COMMENT_CHAR)]
 
     return strlst
