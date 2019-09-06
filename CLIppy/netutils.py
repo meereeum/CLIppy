@@ -4,7 +4,8 @@ import json
 import re
 import requests
 import sys
-from urllib.parse import quote_plus
+# from urllib.parse import quote_plus
+from requests.compat import quote_plus
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
