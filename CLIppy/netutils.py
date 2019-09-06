@@ -59,7 +59,7 @@ def json_me(*args, **kwargs):
 def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
             **kwargs):
     # N.B. args expects base_url (str) + optional params (dict)
-    DEFAULT = {'headers': {'User-agent': 'shiffy47'}}
+    DEFAULT = {'headers': {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'}}
     kwargs = {**DEFAULT, **kwargs}
 
     if verbose:
