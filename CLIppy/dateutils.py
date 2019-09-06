@@ -12,15 +12,16 @@ def convert_date(date_in, fmt_out='%Y-%m-%d'):
     :returns: str (default: 'YYYY-MM-DD')
     """
     D_CONVERSIONS = {
-        'today': datetime.now(),
+        'today':    datetime.now(),
+        'tom':      datetime.now() + timedelta(days=1),
+        'tomorr':   datetime.now() + timedelta(days=1),
         'tomorrow': datetime.now() + timedelta(days=1),
-        'tomorr': datetime.now() + timedelta(days=1),
-        'tom': datetime.now() + timedelta(days=1),
-        'mon': 'monday',
-        'tues': 'tuesday',
-        'wed': 'wednesday',
+        'mon':   'monday',
+        'tues':  'tuesday',
+        'wed':   'wednesday',
+        'weds':  'wednesday',
         'thurs': 'thursday',
-        'fri': 'friday'
+        'fri':   'friday'
     }
 
     # if abbrev, uncompress for parser

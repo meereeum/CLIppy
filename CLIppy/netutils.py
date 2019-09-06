@@ -40,14 +40,17 @@ def compose_query(base_url, d_params=None):
     """Compose query URL, as per requests lib"""
     d_params = d_params if d_params is not None else {}
 
-    paramstr = '?' if d_params is not None else ''
-    paramstr += '&'.join(('{}={}'.format(k, safe_encode(v))
+    paramstr = '?' if d_params else ''
+    paramstr += '&'.join(('{}={}'.format(k, v) #safe_encode(v))
                          for k,v in d_params.items()))
 
     return base_url + paramstr
 
 
 def json_me(*args, **kwargs):
+    DEFAULT = {'headers': {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'}}
+    kwargs = {**DEFAULT, **kwargs}
+
     return json.loads(requests.get(*args, **kwargs).text)
 
 
