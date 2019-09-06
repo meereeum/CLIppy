@@ -73,15 +73,15 @@ def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
         return requested.text
 
     def request_js(*args, encoding=encoding, **kwargs): # TODO - encoding ?
-        import warnings
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            browser = webdriver.PhantomJS() # TODO headless ffox
-        #options = webdriver.firefox.options.Options()
-        #options.set_headless(headless=True)
-        #geckodriver = '/usr/local/bin/geckodriver'
-        #browser = webdriver.Firefox(executable_path=geckodriver,
-        #                            firefox_options=options)
+        # import warnings
+        # with warnings.catch_warnings():
+        #     warnings.simplefilter('ignore')
+        #     browser = webdriver.PhantomJS() # TODO headless ffox
+        options = webdriver.firefox.options.Options()
+        options.set_headless(headless=True)
+        geckodriver = '/usr/local/bin/geckodriver'
+        browser = webdriver.Firefox(executable_path=geckodriver,
+                                    firefox_options=options)
         browser.get(compose_query(*args))
         return browser.page_source
 
