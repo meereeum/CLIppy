@@ -1,4 +1,5 @@
 beautifulsoup4==4.6.0
+lxml==4.4.1
 requests==2.20.0
 selenium==3.13.0
 # ^ plus geckodriver installed to /usr/local/bin/geckodriver

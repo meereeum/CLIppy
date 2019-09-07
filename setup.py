@@ -17,6 +17,7 @@ setuptools.setup(
     platforms='any',
     install_requires=[
         'beautifulsoup4>=4.8.0',
+        'lxml>=4.4.1',
         'python-dateutil>=2.8.0',
         'requests>=2.22.0',
         'selenium>=3.141.0'
