@@ -27,7 +27,8 @@ def flatten(itable):
     return list(itertools.chain.from_iterable(itable))
 
 
-def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f=None):
+def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f=None,
+                  comment_char='#', ignore_blanklines=True):
     """Get line-by-line list from file `dirname/prefix_suffix` OR `fname`
 
     :suffix: str
@@ -36,13 +37,12 @@ def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f
     :fname: str filename
     :dirname: directory (default: path/to/scriptdir)
     :f: direct path/to/file
+    :comment_char: str designating commented bits to ignore
+    :ignore_blanklines: ignore empty lines ? (bool)
     :returns: line-by-line list of strs
     """
     assert (suffix and prefix) or f or fname, 'Must give suffix+prefix or fname or path/to/f !'
     assert (bool(suffix and prefix) + bool(fname) + bool(f)) == 1, 'Unclear: must specify among suffix+prefix vs. fname vs. path/to/f !'
-
-    COMMENT_CHAR = '#'
-    PATTERN = re.compile('{}.*$'.format(COMMENT_CHAR))
 
     if not f:
         dirname = (os.path.dirname(os.path.realpath(__file__)) if dirname is None
@@ -50,11 +50,13 @@ def get_from_file(suffix=None, prefix=None, sep='_', fname=None, dirname=None, f
         fname = fname if fname is not None else sep.join((prefix, str(suffix)))
         f = os.path.join(dirname, fname)
 
+    PATTERN = re.compile('{}.*$'.format(comment_char))
+
     with open(f, 'r') as openfile:
         strlst = [re.sub(PATTERN, '', l.strip().lower()) for l in openfile
-                  if not l.startswith(COMMENT_CHAR)]
+                  if not l.startswith(comment_char)]
 
-    return strlst
+    return list(filter(None, strlst)) if ignore_blanklines else strlst
 
 
 class AttrDict(dict):
