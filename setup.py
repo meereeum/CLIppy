@@ -15,6 +15,10 @@ setuptools.setup(
     packages=['CLIppy'],
 
     platforms='any',
-    install_requires=['python-dateutil==2.6.1',
-                      'beautifulsoup4==4.6.0'],
+    install_requires=[
+        'beautifulsoup4==4.6.0',
+        'python-dateutil==2.6.1',
+        'requests==2.20.0',
+        'selenium==3.13.0'
+    ],
 )
