@@ -56,10 +56,18 @@ def json_me(*args, **kwargs):
 
 
 # @connect_gracefully
-def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
-            **kwargs):
+def soup_me(*args, verbose=False, encoding='base6', parser_or_markup='lxml',
+            from_headless=False, **kwargs):
     # N.B. args expects base_url (str) + optional params (dict)
-    DEFAULT = {'headers': {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'}}
+    # DEFAULT = {'headers': {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'}}
+    DEFAULT = {
+        'headers': {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/109.0',
+            'Accept-Language': 'en-US,en;q=0.5',
+            # 'Content-Type':
+            'Referer': 'http://www.google.com/'
+        }
+    }
     kwargs = {**DEFAULT, **kwargs}
 
     if verbose:
@@ -93,7 +101,7 @@ def soup_me(*args, verbose=False, encoding='base6', from_headless=False,
         print('\nno connection...\n')
         sys.exit(0)
 
-    soup = BeautifulSoup(requesttxt, 'lxml')
+    soup = BeautifulSoup(requesttxt, parser_or_markup)
 
     if verbose:
         print('...&done')
